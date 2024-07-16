@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>커스텀 드롭다운</title>
+    <style>
+      .dropdown {
+        position: relative;
+        display: inline-block;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .dropdown .selected {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .dropdown .triangle {
+        width: 30px;
+        margin-left: 10px;
+        transition: transform 0.3s;
+      }
+
+      .dropdown.active .triangle {
+        transform: rotate(180deg);
+      }
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 105%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: #fff;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .dropdown-menu.active {
+        display: block;
+      }
+
+      .dropdown-menu div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .dropdown-menu div:hover {
+        background: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropdown">
+      <div class="selected">
+        문제 유형
+        <img
+          src="./Arrow_drop_down.svg"
+          alt="드롭다운 화살표"
+          class="triangle"
+        />
+      </div>
+      <div class="dropdown-menu">
+        <div>일치 불일치</div>
+        <div>의미 추론</div>
+        <div>지문의 전개방식</div>
+        <div>정오 판별</div>
+        <div>대상 비교</div>
+        <div>이유 찾기</div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector(".dropdown");
+        const selected = document.querySelector(".selected");
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+
+        if (dropdown.contains(event.target)) {
+          dropdown.classList.toggle("active");
+          dropdownMenu.classList.toggle("active");
+        } else {
+          dropdown.classList.remove("active");
+          dropdownMenu.classList.remove("active");
+        }
+      });
+
+      let problemType = "";
+
+      document.querySelectorAll(".dropdown-menu div").forEach(function (item) {
+        item.addEventListener("click", function (event) {
+          event.stopPropagation();
+          document.querySelector(".selected").childNodes[0].nodeValue =
+            this.textContent;
+          problemType = this.textContent; // 선택한 문제 유형을 problemType 변수에 할당
+          console.log("problemType :", problemType);
+          document.querySelector(".dropdown").classList.remove("active");
+          document.querySelector(".dropdown-menu").classList.remove("active");
+        });
+      });
+    </script>
+  </body>
+</html>
